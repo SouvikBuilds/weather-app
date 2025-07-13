@@ -8,14 +8,22 @@ document.addEventListener("DOMContentLoaded", function () {
         const apiUrl = `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
-        console.log(data);
+        if (data.error && data.error.code === 1006) {
+            document.querySelector(".error").style.display = "block"
+            document.querySelector(".weather").style.display = "none"
+        } else {
+            console.log(data);
 
-        document.querySelector(".city").innerHTML = data.location.name
-        document.querySelector(".temp").innerHTML = Math.round(data.current.temp_c) + "°C"
-        document.querySelector(".humidity").innerHTML = data.current.humidity + "%"
-        document.querySelector(".wind").innerHTML = data.current.wind_kph + "Km/h"
+            document.querySelector(".city").innerHTML = data.location.name
+            document.querySelector(".temp").innerHTML = Math.round(data.current.temp_c) + "°C"
+            document.querySelector(".humidity").innerHTML = data.current.humidity + "%"
+            document.querySelector(".wind").innerHTML = data.current.wind_kph + "Km/h"
 
-        document.querySelector(".Weather_Icon").src = "https:" + data.current.condition.icon;
+            document.querySelector(".Weather_Icon").src = "https:" + data.current.condition.icon;
+
+            document.querySelector(".weather").style.display = "block"
+            document.querySelector(".error").style.display = "none"
+        }
 
     }
 
